@@ -6,7 +6,7 @@ import logging
 
 class externalWiFi(plugins.Plugin):
     __author__ = 'matt@hopsec.co'
-    __version__ = '0.0.1'
+    __version__ = '0.0.2'
     __license__ = 'GPL3'
     __description__ = 'Automatically detects and switches to external WiFi adapters'
 
@@ -14,12 +14,12 @@ class externalWiFi(plugins.Plugin):
         self.externalWiFi = false
 
     def on_loaded(self):
-        logging.info("externalWiFi plugin loaded for %s" % self.options['device'])
+        logging.info("[externalWiFi] plugin loaded")
 
-        for
-            logging.info("")
+        logging.info(os.path.exists('sys/class/net/wlan0'))
 
-        if [ -e cat /sys/class/net/wlan1 ]:
+        if os.path.exists('/sys/class/net/wlan1') == true:
+            logging.info("[externalWiFi] wlan1 detected")
             with open("/boot/config.txt", 'r+') as conFile:
                 lines = conFile.readlines()
                 for row in lines:
@@ -27,8 +27,9 @@ class externalWiFi(plugins.Plugin):
                     if row.find(word) != -1:
                         conFile.write(wifiConfig)
                         self.externalWiFi = true
-             os.system('sudo shutdown -r now')
-        elif [ ! -e cat /sys/class/net/wlan0 ]:
+            os.system('sudo shutdown -r now')
+        elif os.path.exists('sys/class/net/wlan0') == false:
+            logging.info("[externalWiFi] wlan0 not detected")
             with open("/boot/config.txt", 'r+') as conFile:
                 lines = conFile.readlines()
                 conFile.seek(0)
